@@ -6,8 +6,11 @@ import android.os.Message;
 import android.util.Log;
 
 import edu.byu.cs.tweeter.client.backgroundTask.authenticatedTask.AuthenticatedTask;
+import edu.byu.cs.tweeter.client.model.service.net.ServerFacade;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
+import request.authenticated_request.FollowRequest;
+import response.FollowResponse;
 
 /**
  * Background task that establishes a following relationship between two users.
@@ -28,15 +31,28 @@ public class FollowTask extends AuthenticatedTask {
         this.followee = followee;
     }
 
+//    @Override
+//    public void run() {
+//        try {
+//
+//            sendSuccessMessage();
+//
+//        } catch (Exception ex) {
+//            Log.e(LOG_TAG, ex.getMessage(), ex);
+//            sendExceptionMessage(ex);
+//        }
+//    }
+
     @Override
-    public void run() {
-        try {
-
+    protected void doTask() throws Exception {
+        FollowRequest request = new FollowRequest(authToken, followee);
+        FollowResponse response = new ServerFacade().follow(request);
+        if(response.isSuccess()){
             sendSuccessMessage();
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
+        }else{
+            String message = response.getMessage();
+            if(message == null) message = "Unknown";
+            sendFailureMessage(message);
         }
     }
 

@@ -3,6 +3,7 @@ package edu.byu.cs.tweeter.client.backgroundTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -19,9 +20,19 @@ public abstract class BackgroundTask implements Runnable {
     }
 
     @Override
-    public abstract void run();
+    public void run(){
+        try {
+            doTask();
+        } catch (Exception ex) {
+//            Log.e(LOG_TAG, ex.getMessage(), ex);
+            sendExceptionMessage(ex);
+        }
+    }
 
-    protected void sendFailedMessage(String message) {
+
+    protected abstract void doTask() throws Exception;
+
+    protected void sendFailureMessage(String message) {
         Bundle msgBundle = new Bundle();
         msgBundle.putBoolean(SUCCESS_KEY, false);
         msgBundle.putString(MESSAGE_KEY, message);

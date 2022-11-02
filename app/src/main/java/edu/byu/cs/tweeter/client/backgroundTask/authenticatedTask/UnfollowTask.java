@@ -6,8 +6,13 @@ import android.os.Message;
 import android.util.Log;
 
 import edu.byu.cs.tweeter.client.backgroundTask.authenticatedTask.AuthenticatedTask;
+import edu.byu.cs.tweeter.client.model.service.net.ServerFacade;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
+import request.authenticated_request.FollowRequest;
+import request.authenticated_request.UnfollowRequest;
+import response.FollowResponse;
+import response.UnfollowResponse;
 
 /**
  * Background task that removes a following relationship between two users.
@@ -26,14 +31,15 @@ public class UnfollowTask extends AuthenticatedTask {
     }
 
     @Override
-    public void run() {
-        try {
-
+    protected void doTask() throws Exception {
+        UnfollowRequest request = new UnfollowRequest(authToken, followee);
+        UnfollowResponse response = new ServerFacade().unfollow(request);
+        if(response.isSuccess()){
             sendSuccessMessage();
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
+        }else{
+            String message = response.getMessage();
+            if(message == null) message = "Unknown";
+            sendFailureMessage(message);
         }
     }
 

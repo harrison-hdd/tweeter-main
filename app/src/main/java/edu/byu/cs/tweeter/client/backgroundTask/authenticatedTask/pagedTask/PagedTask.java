@@ -44,12 +44,7 @@ public abstract class PagedTask<T> extends AuthenticatedTask {
     @Override
     public void run() {
         try {
-            Pair<List<T>, Boolean> pageOfItems = getData();
-
-            List<T> items = pageOfItems.getFirst();
-            boolean hasMorePages = pageOfItems.getSecond();
-
-            sendSuccessMessage(items, hasMorePages);
+            doTask();
 
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage(), ex);
@@ -57,9 +52,9 @@ public abstract class PagedTask<T> extends AuthenticatedTask {
         }
     }
 
-    protected abstract Pair<List<T>, Boolean> getData();
+    protected abstract void doTask() throws Exception;
 
-    private void sendSuccessMessage(List<T> statuses, boolean hasMorePages) {
+    protected void sendSuccessMessage(List<T> statuses, boolean hasMorePages) {
         Bundle msgBundle = new Bundle();
         msgBundle.putBoolean(SUCCESS_KEY, true);
         msgBundle.putSerializable(ITEMS_KEY, (Serializable) statuses);

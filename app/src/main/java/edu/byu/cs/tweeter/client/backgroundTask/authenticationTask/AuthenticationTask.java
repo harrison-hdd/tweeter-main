@@ -26,22 +26,6 @@ public abstract class AuthenticationTask extends BackgroundTask {
         this.LOG_TAG = LOG_TAG;
     }
 
-    @Override
-    public void run(){
-        try {
-            Pair<User, AuthToken> result = doTask();
-
-            User loggedInUser = result.getFirst();
-            AuthToken authToken = result.getSecond();
-
-            sendSuccessMessage(loggedInUser, authToken);
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
-        }
-    }
-
     protected void sendSuccessMessage(User loggedInUser, AuthToken authToken) {
         Bundle msgBundle = new Bundle();
         msgBundle.putBoolean(SUCCESS_KEY, true);
@@ -54,6 +38,6 @@ public abstract class AuthenticationTask extends BackgroundTask {
         messageHandler.sendMessage(msg);
     }
 
-    protected abstract Pair<User, AuthToken> doTask();
+    protected abstract void doTask() throws Exception;
 
 }

@@ -6,9 +6,14 @@ import android.os.Message;
 import android.util.Log;
 
 import edu.byu.cs.tweeter.client.backgroundTask.authenticatedTask.AuthenticatedTask;
+import edu.byu.cs.tweeter.client.model.service.net.ServerFacade;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.util.FakeData;
+import request.authenticated_request.FollowRequest;
+import request.authenticated_request.GetUserRequest;
+import response.FollowResponse;
+import response.GetUserResponse;
 
 /**
  * Background task that returns the profile for a specified user.
@@ -29,19 +34,20 @@ public class GetUserTask extends AuthenticatedTask {
     public GetUserTask(AuthToken authToken, String alias, Handler messageHandler) {
         super(messageHandler, authToken);
         this.alias = alias;
-
     }
 
+
+
     @Override
-    public void run() {
-        try {
-            User user = getUser();
-
-            sendSuccessMessage(user);
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
+    protected void doTask() throws Exception {
+        GetUserRequest request = new GetUserRequest(authToken, alias);
+        GetUserResponse response = new ServerFacade().getUser(request);
+        if(response.isSuccess()){
+            sendSuccessMessage(response.getUser());
+        }else{
+            String message = response.getMessage();
+            if(message == null) message = "Unknown";
+            sendFailureMessage(message);
         }
     }
 

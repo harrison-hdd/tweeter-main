@@ -5,11 +5,16 @@ import android.os.Handler;
 import java.util.List;
 
 import edu.byu.cs.tweeter.client.backgroundTask.authenticatedTask.pagedTask.PagedTask;
+import edu.byu.cs.tweeter.client.model.service.net.ServerFacade;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.util.FakeData;
 import edu.byu.cs.tweeter.util.Pair;
+import request.authenticated_request.paged_service_request.GetFeedRequest;
+import request.authenticated_request.paged_service_request.GetStoryRequest;
+import response.paged_service_response.GetFeedResponse;
+import response.paged_service_response.GetStoryResponse;
 
 /**
  * Background task that retrieves a page of statuses from a user's story.
@@ -17,21 +22,20 @@ import edu.byu.cs.tweeter.util.Pair;
 public class GetStoryTask extends PagedTask<Status> {
     private static final String LOG_TAG = "GetStoryTask";
 
-
-
     public GetStoryTask(AuthToken authToken, User targetUser, int limit, Status lastStatus,
                         Handler messageHandler) {
         super(messageHandler, authToken, targetUser, limit, lastStatus);
     }
 
     @Override
-    protected Pair<List<Status>, Boolean> getData() {
-        return getFakeData().getPageOfStatus(lastItem, limit);
+    protected void doTask() throws Exception {
+        ServerFacade serverFacade = new ServerFacade();
+        GetStoryRequest request = new GetStoryRequest(authToken, targetUser, lastItem, limit);
+        GetStoryResponse response = serverFacade.getStory(request);
+        if(response.isSuccess()){
+            sendSuccessMessage(response.getItems(), response.getHasMorePages());
+        }else{
+            sendFailureMessage(response.getMessage());
+        }
     }
-
-    private FakeData getFakeData() {
-        return FakeData.getInstance();
-    }
-
-
 }

@@ -6,8 +6,13 @@ import android.os.Message;
 import android.util.Log;
 
 import edu.byu.cs.tweeter.client.backgroundTask.authenticatedTask.AuthenticatedTask;
+import edu.byu.cs.tweeter.client.model.service.net.ServerFacade;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
+import request.authenticated_request.FollowRequest;
+import request.authenticated_request.PostStatusRequest;
+import response.FollowResponse;
+import response.PostStatusResponse;
 
 /**
  * Background task that posts a new status sent by a user.
@@ -28,14 +33,15 @@ public class PostStatusTask extends AuthenticatedTask {
     }
 
     @Override
-    public void run() {
-        try {
-
+    protected void doTask() throws Exception {
+        PostStatusRequest request = new PostStatusRequest(authToken, status);
+        PostStatusResponse response = new ServerFacade().postStatus(request);
+        if(response.isSuccess()){
             sendSuccessMessage();
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
+        }else{
+            String message = response.getMessage();
+            if(message == null) message = "Unknown";
+            sendFailureMessage(message);
         }
     }
 

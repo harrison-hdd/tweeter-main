@@ -48,6 +48,7 @@ dependencies {
 
     // Image management
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation files('/Users/hoando/Desktop/BYU_F2022/CS340/TweetServer/out/artifacts/net_shared_jar/net_shared.jar')
 
     /**
      * Testing related dependencies

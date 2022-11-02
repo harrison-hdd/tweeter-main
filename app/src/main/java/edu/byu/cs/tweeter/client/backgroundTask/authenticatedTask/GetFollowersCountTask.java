@@ -6,8 +6,13 @@ import android.os.Message;
 import android.util.Log;
 
 import edu.byu.cs.tweeter.client.backgroundTask.authenticatedTask.AuthenticatedTask;
+import edu.byu.cs.tweeter.client.model.service.net.ServerFacade;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
+import request.authenticated_request.FollowRequest;
+import request.authenticated_request.GetFollowersCountRequest;
+import response.FollowResponse;
+import response.GetFollowersCountResponse;
 
 /**
  * Background task that queries how many followers a user has.
@@ -29,16 +34,20 @@ public class GetFollowersCountTask extends AuthenticatedTask {
         this.targetUser = targetUser;
     }
 
+
+
     @Override
-    public void run() {
-        try {
-
-            sendSuccessMessage(20);
-
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
+    protected void doTask() throws Exception {
+        GetFollowersCountRequest request = new GetFollowersCountRequest(authToken, targetUser);
+        GetFollowersCountResponse response = new ServerFacade().getFollowersCount(request);
+        if(response.isSuccess()){
+            sendSuccessMessage(response.getFollowersCount());
+        }else{
+            String message = response.getMessage();
+            if(message == null) message = "Unknown";
+            sendFailureMessage(message);
         }
+
     }
 
     private void sendSuccessMessage(int count) {
