@@ -32,6 +32,8 @@ android {
         unitTests.all {
             useJUnitPlatform()
         }
+        unitTests.includeAndroidResources  = true
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -71,6 +73,8 @@ dependencies {
 
     // requires test/resources/mockito-extensions/org.mockito.plugins.MockMaker to have content "mock-maker-inline"
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.4.0'
+
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     androidTestImplementation group: 'org.mockito', name: 'mockito-android', version: '4.4.0'
 }

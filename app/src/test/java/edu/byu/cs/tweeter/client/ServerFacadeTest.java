@@ -73,8 +73,9 @@ public class ServerFacadeTest {
         Assertions.assertThrows(BadRequestException.class, ()-> serverFacade.register(request10));
 
 
-        RegisterRequest request11 = new RegisterRequest("username", "password", "first", "last", "");
-        Assertions.assertThrows(BadRequestException.class, ()-> serverFacade.register(request11));
+        RegisterRequest request11 = new RegisterRequest("username", "password", "first", "last", "abcdef");
+        BadRequestException e = Assertions.assertThrows(BadRequestException.class, ()-> serverFacade.register(request11));
+        Assertions.assertEquals(e.getMessage(), "[Bad Request] Username must start with @");
 
     }
 

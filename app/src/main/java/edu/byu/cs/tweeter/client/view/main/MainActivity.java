@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
             followButton.setTextColor(getResources().getColor(R.color.lightGray));
         }
 
-
     }
 
 
