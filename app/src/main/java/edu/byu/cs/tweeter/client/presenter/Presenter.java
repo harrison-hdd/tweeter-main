@@ -5,5 +5,4 @@ public abstract class Presenter {
         void displayInfoMessage(String message);
     }
 
-
 }

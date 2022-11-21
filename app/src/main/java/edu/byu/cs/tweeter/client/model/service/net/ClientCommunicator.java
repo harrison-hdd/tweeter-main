@@ -35,7 +35,7 @@ public class ClientCommunicator {
             connection.connect();
 
 
-//            String req = new Gson().toJson(request); //fixme: debug
+            String req = new Gson().toJson(request); //fixme: debug
 
             Writer requestBodyStream = new OutputStreamWriter(connection.getOutputStream());
             JsonSerializer.writeToRequest(request, requestBodyStream);

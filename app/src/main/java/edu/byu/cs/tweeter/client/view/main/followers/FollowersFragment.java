@@ -92,7 +92,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
 
         followersPresenter = new FollowersPresenter(this);
 
-        followersRecyclerViewAdapter.loadMoreItems(); //fixme:ninitial load. presenter should tell view when to do this
+        followersRecyclerViewAdapter.loadMoreItems(); //fixme:initial load. presenter should tell view when to do this
 
         return view;
     }

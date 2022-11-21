@@ -12,6 +12,7 @@ public class Follow implements Serializable {
      * The user doing the following.
      */
     public User follower;
+
     /**
      * The user being followed.
      */

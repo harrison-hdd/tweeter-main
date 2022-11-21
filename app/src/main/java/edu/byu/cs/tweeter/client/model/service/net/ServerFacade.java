@@ -31,7 +31,7 @@ import response.paged_service_response.GetFollowersResponse;
 import response.paged_service_response.GetStoryResponse;
 
 public class ServerFacade {
-    private static String baseURLPath = "https://3v017vx0a3.execute-api.us-east-1.amazonaws.com/test/";
+    private static final String baseURLPath = "https://3v017vx0a3.execute-api.us-east-1.amazonaws.com/test/";
 
     private final ClientCommunicator clientCommunicator;
 

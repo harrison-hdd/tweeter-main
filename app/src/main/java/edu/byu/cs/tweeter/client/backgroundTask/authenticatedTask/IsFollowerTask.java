@@ -47,7 +47,7 @@ public class IsFollowerTask extends AuthenticatedTask {
         IsFollowerRequest request = new IsFollowerRequest(authToken, follower, followee);
         IsFollowerResponse response = new ServerFacade().isFollower(request);
         if(response.isSuccess()){
-            sendSuccessMessage(response.isFollower());
+            sendSuccessMessage(response.getIsFollower());
         }else{
             String message = response.getMessage();
             if(message == null) message = "Unknown";

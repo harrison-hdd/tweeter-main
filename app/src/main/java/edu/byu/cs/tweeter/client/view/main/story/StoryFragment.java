@@ -222,7 +222,12 @@ public class StoryFragment extends Fragment implements StoryPresenter.View<Statu
 
             for (String url : status.getUrls()) {
                 int startIndex = status.getPost().indexOf(url);
-                spannableString.setSpan(new URLSpan(url), startIndex, (startIndex + url.length()), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                String realUrl = url;
+                if(!url.startsWith("http")){
+                    realUrl = "http://" + url;
+                }
+                URLSpan urlSpan = new URLSpan(realUrl);
+                spannableString.setSpan(urlSpan, startIndex, (startIndex + url.length()), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
             post.setText(spannableString);
