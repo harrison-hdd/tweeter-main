@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: ./../TweetServer/out/artifacts/net_shared_jar/net_shared.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../TweetServer/out/artifacts/net_shared_jar/net_shared.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
